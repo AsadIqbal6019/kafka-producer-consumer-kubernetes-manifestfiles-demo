@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-consumer-sample
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: spring-consumer-sample
+  replicas: 1
+  template:
+    metadata:
+      name: spring-consumer-sample
+      labels:
+        app: spring-consumer-sample
+    spec:
+      containers:
+        - name: spring-consumer-sample
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: password
+            - name: POSTGRES_SERVICE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-consumer-conf
+                  key: postgres_host
+            - name: POSTGRES_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-consumer-conf
+                  key: db_name
+            - name: KAFKA_ENDPOINT
+              value: kafka:9092
+          # image: vamsitechtuts/springbootpostgresrestapidemo:latest
+          image: asadiqbal6019/spring-kafka-consumer-app:1.0
