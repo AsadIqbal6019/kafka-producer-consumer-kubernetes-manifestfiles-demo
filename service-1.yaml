@@ -10,6 +10,7 @@ spec:
       port: 5432
       # nodePort: 32000
       # targetPort: postgresql
+      # AsadIqbal
       targetPort: 5432
       protocol: TCP
   selector:
